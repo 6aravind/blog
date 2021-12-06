@@ -1,0 +1,25 @@
+name: ds
+channels:
+  - pytorch 
+  - fastai
+  - defaults
+  - conda-forge
+
+dependencies:
+  - cpuonly
+  - typeguard
+  - python=3.7
+  - opencv=4.5.2
+  - pytorch=1.8.0
+  - torchvision
+  - Pillow=8.0
+  - pandas
+  - pyqt 
+  - imagesize
+  - requests
+  - matplotlib
+  - scikit-learn
+  - fastcore
+  - notebook
+  - jupyter_contrib_nbextensions
+  - jupyter_nbextensions_configurator

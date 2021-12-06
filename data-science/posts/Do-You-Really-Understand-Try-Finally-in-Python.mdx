@@ -1,0 +1,128 @@
+------------------------------------------------------------------------
+title: Do You Really Understand Try & Finally in Python?
+
+description: In python, try and except blocks are often used by programmers for
+handling any exception or unhappy scenarios. Finally clause is very...
+
+image: https://cdn-images-1.medium.com/max/800/1*UvbqhJ61omj3NqgtvvjPUQ.jpeg
+
+date: April 18, 2021
+
+tags:
+	- Python
+	- Exception
+    - Function
+
+
+------------------------------------------------------------------------
+
+# Do You Really Understand Try & Finally in Python?
+
+In python, `try` and `except` blocks are often used by programmers for handling any exception or unhappy scenarios. `Finally` clause is very under appreciated & can be better utilised. Let us check out how *final-block* works. 
+
+![Lady confused about Try/Final block in python](https://cdn-images-1.medium.com/max/800/1*UvbqhJ61omj3NqgtvvjPUQ.jpeg)
+
+## **Deep dive**
+
+> No matter what happened previously, the final-block is executed once
+> the code block is complete and any raised exceptions handled. Even if
+> there's an error in an exception handler or the else-block and a new
+> exception is raised, the code in the final-block is still run.
+
+This quote from the python
+[documentation](https://docs.python.org/2.5/whatsnew/pep-341.html) is absolutely correct but the execution behavior is
+little tricky when `try` and
+`finally` blocks are encapsulated within
+a function which has a `return`
+statement. Let me explain with examples. See if you could guess the
+output of the following functions.
+
+### Example 1: 
+
+```python
+# Both the try & final blocks have print statements and function returns value from final-block
+def example_1():
+    try:
+        val = 1
+        print(f"Print: Try Block - ")
+    finally:
+        val = val + 1
+        print(f"Print: Finally Block - ")
+        return f"Return: Finally Block - "
+    
+example_1()
+```
+
+![Example 1 - output](https://cdn-images-1.medium.com/max/800/1*IT65Lt1_FIKBxRuzXnXgnA.png)
+
+Function `example_1` is simple and
+straight, first the *try-block* gets executed and then *final-block*.
+The variable `val` has value **1** in
+*try-block* and gets updated to **2** in *final-block*.
+
+
+### Example 2:
+
+```python
+# The try block has return statement & final block has only print statement
+def example_2():
+    try:
+        val = 1
+        print(f"Print: Try Block - ")
+        return f"Return: Try Block - "
+    finally:
+        val = val + 1
+        print(f"Print: Finally Block - ")
+        
+example_2()
+```
+
+![Example 2 - output](https://cdn-images-1.medium.com/max/800/1*sbi8YhzY3cIbC3g6-YMaBg.png)
+
+Function `example_2` is where things get
+a bit tricky, the `return`statement in
+*try-block* is executed after the *final-block* but the value of the
+variable `val`returned is not affected
+by the changes made in the *final-block*.
+
+### Example 3:
+
+```python
+# Both the try & final blocks have return statements
+def example_3():
+    try:
+        val = 1
+        print(f"Print: Try Block - ")
+        return f"Return: Try Block - "
+    finally:
+        val = val + 1
+        print(f"Print: Finally Block - ")
+        return f"Return: Finally Block - "
+    
+example_3()
+```
+
+![Example 3 - output](https://cdn-images-1.medium.com/max/800/1*IT65Lt1_FIKBxRuzXnXgnA.png)
+
+Output of the function `example_3` is
+easy to guess. When the `return`
+statement in *final-block* is executed, the function exits so the
+`return` statement in *try-block* is
+never executed.
+
+## Take Away
+
+
+![Code Execution Flow](https://cdn-images-1.medium.com/max/1200/1*T76_KalEnpWcITKquwzKpQ.png)
+
+`try` & `finally`blocks are not quite as straight forward as one might
+think, especially when they are returning values from a function. For
+more such interesting tidbits follow me via
+[Twitter](https://twitter.com/6aravind). The takeaways from this post are:
+
+1.  Where you put the `return`
+    statement is going to make a difference.
+2.  Even though the `return` statement
+    from *try-block* is executed after the *final-block*, value of the
+    variable returned won't be affected by alteration made in the
+    *final-block*.

@@ -1,0 +1,107 @@
+------------------------------------------------------------------------
+title: Use case for Python Tuple
+
+description: Most Python programmers are guilty (me included) of always using List without even considering Tuple at all. Surely for some use cases...
+
+image: https://cdn-images-1.medium.com/max/1200/1*1Nx6PRB34MtR7rzBNFROTA.png
+
+date: March 25, 2021
+
+tags:
+	- Python
+	- List
+	- Tuple
+
+
+------------------------------------------------------------------------
+
+# Use case for Python Tuple 
+
+Most Python programmers are guilty (me included) of always using List without even considering Tuple at all. Surely for some use cases, Tuple should be better, right? Keep reading for one such case. 
+
+
+![Drake hates tuple but likes list](https://cdn-images-1.medium.com/max/1200/1*1Nx6PRB34MtR7rzBNFROTA.png)
+
+
+Tuple is like List but immutable, so it has lesser in built methods.
+Tuples are faster than Lists, but it is noticeable only when the size of
+the tuple is considerably large. If you want a refresher, check out this
+[blog](https://medium.com/@GalarnykMichael/python-tuples-and-tuple-methods-4817a6bb6fff) by [Michael
+Galarnyk](https://medium.com/u/c07aac64b6e1)
+
+---
+
+## Caveat
+A general rule of thumb is to use Tuple only when the data will or
+should not change.
+
+```python
+# Create Tuple with two elements
+tup = (1, [2])
+
+# Re-assign first element
+tup[0] = 3
+```
+
+![Tuple is immutable so it doesn't support item
+assignment.](https://cdn-images-1.medium.com/max/800/1*p2nhqwqYjSrxD2R0eQtfbA.png)
+
+This does not mean you really can't change a tuple. If the underlying
+tuple element is mutable, then we can change it. This could lead to
+unintended side effects. For example, children/inherited class can
+modify a tuple element initialized by the parent class.
+
+```python
+# Add element to existing List element inside Tuple
+tup[1].append(3)
+
+print(tup)
+```
+
+![If Tuple element is list then it can
+be altered.](https://cdn-images-1.medium.com/max/800/1*0D1mEEYDOfQ8XSvjtbIlcQ.png)
+
+---
+
+## Use Case 
+Personally, I am more into Deep Learning and have to deal with image
+files a lot. Image files have many popular formats like jpg, png and svg
+etc. We often have a situation where we have to find all files of
+certain types from a folder. There are many ways of going about this. We
+will explore a few options.
+
+### Option 1: Using List
+
+The filtering based on the extension type is done with the help of
+`endswith` method. Since the
+`endswith` method does not accept list,
+we are looping through all the extension elements. The code looks
+**readable** and takes about **2 microseconds** which is not bad, but
+for every extension type, we have to run through all the files one more
+time. I have a suspicion that we can do much better.
+
+
+![Find all the image files
+using List](https://cdn-images-1.medium.com/max/2560/1*Iog70GJApllX7Y4nD0x40g.png)
+
+
+### Option 2: Using Tuple
+
+Almost similar code, but we are able to pass the entire Tuple as
+parameter to the `endswith` method. This
+removes the extra loop and makes the code even **shorter**. The code now
+runs about **2 times faster**.
+
+![Find all the image files
+using Tuple](https://cdn-images-1.medium.com/max/2560/1*576VgydtoleKDkUx43Icig.png)
+
+
+### Conclusion
+
+Some methods like `startswith` and
+`endswith` accept Tuple as parameter, if
+the data does not change then better to use Tuple or convert List to
+Tuple before passing data to the method. Tuples make the code look more
+**elegant** and run **faster**. Also, don't forget about the **caveat**.
+If you have any questions or thoughts, feel free to reach out via
+[Contact](https://raravind.com/#contact)

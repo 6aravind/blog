@@ -1,0 +1,76 @@
+---
+
+title: Customize or Extend Python Third-Party Modules Using Partial Function 
+
+description: Let me explain with an example.
+
+image: https://cdn-images-1.medium.com/max/800/1*To1yUwpx8muoToR6GEzycg.png
+
+date: June 11, 2021
+
+category: data-science
+
+tags:
+  - Python
+  - Partial Function
+  - Matplotlib
+
+---
+
+
+
+# Customize or Extend Python Third-Party Modules Using Partial Function 
+
+ Let me explain with an example. 
+
+![](https://cdn-images-1.medium.com/max/800/1*To1yUwpx8muoToR6GEzycg.png)
+
+## Introduction 
+
+Partial functions allow us to fix values for some arguments of a
+function and generate a new function. The common example for partial
+function would be:
+
+<script src="https://gist.github.com/6aravind/69278ae3c5d6861c33013c4cc207892e#file-example-py"> </script>
+
+This example is a solid starter example for partial functions, but feels
+more like a syntactic sugar rather than functionality gain. Partial
+function shines, when you are restricted by third party modules or code
+which you have no control over.
+
+## Example Brief 
+
+I was playing around with [Matplotlib
+Animation](https://matplotlib.org/stable/api/animation_api.html) module and found that [save
+method](https://matplotlib.org/stable/_modules/matplotlib/animation.html#Animation.save) has a progress callback function. Callback function
+takes two arguments (current\_frame & total\_frames), but a progress bar
+without metadata like file name and elapsed time is not very useful. So
+we will use *Partial Function* to enhance it.
+
+![Animation
+Save Function](https://cdn-images-1.medium.com/max/800/1*rKs4tpt3YP2T5aKTaw-ocA.png)
+
+## Creating Animated Line Chart
+
+<script src="https://gist.github.com/6aravind/69278ae3c5d6861c33013c4cc207892e#file-creating_animated_line_chart-py"></script>
+
+![](https://cdn-images-1.medium.com/max/800/1*7nL0S3CfDBNDT3ZSmk4J5A.gif)
+
+## Write to disk
+
+<script src="https://gist.github.com/6aravind/69278ae3c5d6861c33013c4cc207892e#file-write_to_disk-py"></script>
+
+![Progress bar created with help of
+partial function](https://cdn-images-1.medium.com/max/800/1*xFXBoAtDIFKVHznr7NndoA.gif)
+ 
+
+## Takeaway 
+
+Partial functions give you more control, especially when you are adding
+features on top of code written by others.
+
+## Resource 
+
+
+[**Animations with Matplotlib](https://towardsdatascience.com/animations-with-matplotlib-d96375c5442c "https://towardsdatascience.com/animations-with-matplotlib-d96375c5442c")[](https://towardsdatascience.com/animations-with-matplotlib-d96375c5442c)
+

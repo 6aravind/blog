@@ -1,0 +1,126 @@
+---
+title: Automate Gist Creation From Markdown File Using Python 
+
+description: Markdown's code block is great for writing code snippets. However, when
+you try to publish or share it via blogging platform there are some...
+
+image: https://cdn-images-1.medium.com/max/800/1*IS8_PSMLtHZ0bFYWwZnepg.png
+
+date: May 11, 2021
+
+category: web-development
+
+tags:
+ - Github
+ - Code Snippets
+ - Blogging
+ - Gist
+ - Version Control
+---
+
+# Automate Gist Creation From Markdown File Using Python 
+
+Markdown's code block is great for writing code snippets. However, when you try to publish or share it via blogging platform there are some shortcomings. Gist can help to bridge the gap. Gist makes your blog look better & easier to maintain. In this post, Let us see how automated gist creation can improve your technical blogging experience. 
+
+![](https://cdn-images-1.medium.com/max/800/1*IS8_PSMLtHZ0bFYWwZnepg.png)
+
+## Gist Intro 
+
+Gist is a GitHub repository where you can store & share code/data with
+others. A single gist can store multiple files. Syntax highlighting is
+supported based on the file extension type, so be careful when you name
+the file. Gists can be public or secret. Do note that secret gists
+aren't private, meaning anyone with the URL would be able to view the
+code/data.
+
+## Why to use gist? 
+
+-   Supports GitHub repository functionalities like version control,
+    fork & clone.
+-   Ability to subscribe, star and comment makes gist easy to
+    collaborate with others.
+-   Gist can be shared in multiple ways without any dependency or
+    installation.
+
+![Gist
+Share](https://cdn-images-1.medium.com/max/800/1*FLCIYbgEYT9h0lWjVjFUrQ.png)
+
+## Why use gist in a blog? 
+
+My current workflow for blogging is as follows:
+
+1.  Use Jupyter notebook to write the blog.
+2.  Download the notebook as markdown file.
+3.  Make edits to markdown file before posting to platforms like
+    [Medium](https://6aravind.medium.com) & [Dev
+    to](https://dev.to/6aravind)
+
+There are many manual processes involved in step 3, which I'm planning
+to address in the next few weeks. My biggest concern right now is how
+the code snippet looks in different platforms. To be more specific:
+
+-   No easy way to make changes to code snippets after
+    publishing
+-   Medium loses syntax highlighting
+-   Unable to highlight specific lines in a long code snippet in both
+    the platforms
+
+![Difference between Medium
+and Gist](https://cdn-images-1.medium.com/max/800/1*sy6xTWMWN-GPTkThesfkWA.png)
+
+Gist helps to solve all these issues. Also as a bonus, All code snippets
+from the same blog can be grouped together via gist. This makes it
+easier to refer/access (if needed).
+
+## Gist Creation From Markdown File 
+
+The goal is to create a gist for the markdown file where every code
+snippet will be a separate file.
+
+1.  First we will download the token for gist creation like mentioned
+    in [this
+    post](https://www.liquidweb.com/kb/little-known-ways-to-utilize-github-gists/) and store it in a file
+    named --- *create\_gist\_token.txt*
+
+2. We can read the markdown file using python and use regular
+expression to find all the code blocks. Code block for python is created
+by wrapping the code between \`\` in the markdown file. The flag
+[re.S](https://docs.python.org/3/library/re.html#re.S) makes sure that the matching includes newline as well
+
+3. As mentioned earlier, each code snippet is going to be a separate
+file in a gist, so we need a name for each one. To keep it simple, we
+will take the first comment as the name of the file.
+
+4. The description of the gist will be the first header of the markdown
+file. Typically, this will be the name of the blog, so it should be
+sufficient. Now we can put all the data together and make the API call.
+
+5. As Devto supports liquid text we need special formatting for gist
+embedding when compared to Medium. In both the platforms, we need to
+specify the file so that the entire gist is not displayed.
+
+6. Loop through all the uploaded files and replace them with
+corresponding gist embeddings in the markdown file. I have included the
+embeddings for both the platforms, feel free to modify it as per your
+needs.
+
+7. Rewiring the script to make it easier to run from command line.
+
+
+---
+
+
+ 
+ 
+## Takeaway 
+
+Gist is quite useful and addresses many of the pet peeves in blogging.
+We have managed to put together a python script which can reduce the
+manual effort required in publishing a blog. Feel free to reach out to
+me via [Contact](https://raravind.com/#contact)
+
+
+---
+
+
+ 

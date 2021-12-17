@@ -1,0 +1,147 @@
+---
+
+title: Validate User Input in Python Function 
+
+description: Writing type hints for function arguments is a good start, but as the
+name suggests, it only hints at the data type of argument. When the...
+
+image: https://cdn-images-1.medium.com/max/800/1*lT0rghpDqMoLma42NGOChA.png
+
+date: June 29, 2021
+
+category: data-science
+
+tags:
+- Python
+- Validation
+- Data Type
+
+---
+ 
+ 
+# Validate User Input in Python Function 
+
+Writing type hints for function arguments is a good start, but as the name suggests, it only hints at the data type of argument. When the functionality of the code depends on the data type of argument, then we must put validations in place. 
+
+## Introduction 
+
+Type hints are great, they help you to write better code and reduce
+documentation required for external users or downstream software
+developers. However, type hints do not validate the input from the user.
+In my opinion, without any validation, you are playing the odds, but if
+you are up for a gamble then good luck to you! For the non-gamblers, we
+will explore how to do this with an example.
+
+![To validate type-hint
+or not](https://cdn-images-1.medium.com/max/800/1*lT0rghpDqMoLma42NGOChA.png)
+
+### Code 
+
+Let us write a simple function (`add`)
+which has a single argument `vals`. The
+logic for the function is:
+
+-   Validate that the input for `vals` argument is a `List` of either `int` or
+    `string`.
+-   Return a list of `integer` after
+    adding 1 or list of `string` with
+    period appended to the argument `vals` based on the user input.
+
+You can validate the user input with a simple `isinstance` function. The above code works, but it\'s not scalable
+for the below reasons:
+
+1.  Have to write validations for every argument of the
+    function.
+2.  Probably requires a lot of effort to rewrite, when the function
+    argument is modified.
+3.  Don't forget about the test cases required for type
+    validations.
+
+**Tests**
+
+*Positive:*
+
+Positive Test Cases
+
+*Negative:*
+
+``` 
+# Test Function add for int
+add(1)
+```
+
+``` 
+# Test Function add for list of float
+add([1.0])
+```
+
+``` 
+# Test Function add for list of mixed data types
+add([1, 1.0])
+```
+
+![Error message for negative
+test cases](https://cdn-images-1.medium.com/max/800/1*h1kDU8Z4vHKD4CVqsnFAtQ.png)
+
+
+
+
+---
+
+ 
+ 
+## Better Way 
+
+Python's type hints and
+[type\_extensions](https://github.com/python/typing/tree/master/typing_extensions) is changing rapidly over the last few iterations, so
+my recommendation is to use an external package like
+[Typeguard](https://pypi.org/project/typeguard/) for the following reasons:
+
+1.  Helps to abstract away the code for type validation with help of a
+    decorator.
+2.  Provides additional functionality (way more than what we wrote or
+    need).
+3.  Support for multiple Python versions have been tested.
+4.  Error message is detailed and easy to understand.
+
+To replicate our example from above, we just have to add the
+`typechecked` decorator before the
+function definition and remove the validations for type checks.
+
+**Negative Tests:**
+
+``` 
+# Test Function add_ext for int
+add_ext(1)
+```
+
+![Error message for negative test
+case --- Int](https://cdn-images-1.medium.com/max/800/1*xAxUxCq_RmUSFOeQ3U5RaA.png)
+
+``` 
+# Test Function add_ext for list of float
+add_ext([1.])
+```
+
+![Error message for negative test
+case --- Float](https://cdn-images-1.medium.com/max/800/1*MJ9HTZTuJBNXR-ly2CkOSA.png)
+
+``` 
+# Test Function add_ext for list of mixed data types
+add_ext([1, 1.0])
+```
+
+![Error message for negative test case --- Mixed
+list data](https://cdn-images-1.medium.com/max/800/1*uxG2VciSE8rTNvFuik_8OQ.png)
+
+## Takeaway 
+
+If you are working on something serious, then don't forget to validate
+user inputs. Feel free to reach out via
+[Contact](https://raravind.com/#contact) for any questions or suggestions.
+
+## Further Reading 
+
+[20 Type Hinting Techniques and Tools for Better Python
+Code](https://betterprogramming.pub/twenty-type-hinting-techniques-and-tools-for-better-python-code-e877e0b0c679)
+

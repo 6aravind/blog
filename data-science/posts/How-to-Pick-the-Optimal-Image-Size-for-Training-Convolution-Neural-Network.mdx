@@ -1,0 +1,104 @@
+---
+
+title: How to Pick the Optimal Image Size for Training Convolution Neural Network? 
+
+description: When training a Convolution Neural Network on a custom dataset, picking
+the right image is crucial. This will impact the training time &...
+
+image: https://cdn-images-1.medium.com/max/800/0*GGKO-0fJglMqrH_J
+
+date: June 23, 2021
+
+category: data-science
+
+tags:
+  - CNN
+  - Matplotlib
+  - Deep Learning
+  - Visualization
+
+---
+ 
+# How to Pick the Optimal Image Size for Training Convolution Neural Network? 
+
+When training a Convolution Neural Network on a custom dataset, picking the right image is crucial. This will impact the training time & performance of the model. Also, we will learn how to identify if there are any issues with the dataset. 
+
+![Photo by Szabolcs
+Varnai](https://cdn-images-1.medium.com/max/800/0*GGKO-0fJglMqrH_J)
+
+
+## Why? 
+
+Before we jump to how part, Let us discuss the negative consequence of
+choosing the wrong size. After we pick a fixed **width** and **height**,
+the standard procedure is to resize all the images to this fixed size.
+So, now every image falls into one of the two buckets.
+
+-   *Downscaling:* Bigger images will be down scaled, this makes it
+    harder for CNN to learn the features required for classification or
+    detection as the number of pixels where the vital feature will be
+    present is significantly reduced.
+-   *Upscaling:* When small images are upscaled and padded with zero,
+    then NN has to learn that the padded portion has no impact on
+    classification. Larger images are also slower to train and might
+    require more VRAM.
+
+So we have to pick our poison, the closer to optimal image size we are,
+the better it is.
+
+### Optimal Image Size 
+
+We all know that choosing the right size depends on the dataset, but the
+question is how to do it? Visualize the image size.
+
+Dataset: [The Oxford-IIIT Pet
+Dataset](https://www.robots.ox.ac.uk/%7Evgg/data/pets/)
+
+<script src="https://gist.github.com/6aravind/14c37b524748969fc92c6c9ba39e7159.js?file=identify_image_resolutions.py"> </script>
+
+
+![Image
+Meta Data](https://cdn-images-1.medium.com/max/800/1*dVO2WqrsbHcdbhGsuQISgQ.png)
+
+This dataset has more than 7000 images with varying size and resolution.
+
+<script src="https://gist.github.com/6aravind/14c37b524748969fc92c6c9ba39e7159.js?file=visualize_image_resolutions.py"></script>
+
+ 
+![Image Resolution
+Plot](https://cdn-images-1.medium.com/max/1200/1*qQe56sdFNK3eyZD618aneg.png)
+
+
+ 
+From the first plot, it looks like most images are of resolution less
+than 500 by 500. After zooming in, we can clearly see that images are
+clustered around either size 300 or 500. My recommendation for this
+dataset is to start training the neural network with image size 300 and
+progressively increase it to 400 and finish it with size 500. By this
+way, the model should be able to generalize well for different image
+resolutions.
+
+---
+
+ 
+## Bonus 
+
+1.  Wouldn't it be great if we can see the underlying images while
+    inspecting the points in the plot? This can help us to identify the
+    following potential issues.
+
+-   Mislabeled data: Can confuse the model.
+-   Certain class images are of very high or low resolution: Could make
+    the model biased.
+
+2. After inspection, if we conclude that some data points should be
+removed, then use [Lasso
+Selector](https://matplotlib.org/stable/gallery/widgets/lasso_selector_demo_sgskip.html) to achieve that.
+
+
+
+![Interactive
+Plotting](https://cdn-images-1.medium.com/max/1200/1*-zwCsHGbvFb-MVAAMtWO9w.gif)
+
+If you have any questions or thoughts, feel free to reach out via
+[Contact](https://raravind.com/#contact)

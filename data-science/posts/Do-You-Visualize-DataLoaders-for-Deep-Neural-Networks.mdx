@@ -1,0 +1,254 @@
+---
+
+title: Do You Visualize DataLoaders for Deep Neural Networks?
+
+description: A lot of factors can affect the performance of a Deep Neural Network.
+Let's see how we can set up a PyTorch pipeline for Image augmentation...
+
+image: https://cdn-images-1.medium.com/max/1200/1*NdxIFtI2AeW3WkTaFePRjA.jpeg
+
+date: June 3, 2021
+
+category: data-science
+
+tags:
+  - Python
+  - Pytorch
+  - DataLoader
+  - Visualization
+  - Image
+
+---
+ 
+ 
+# Do You Visualize DataLoaders for Deep Neural Networks? 
+
+A lot of factors can affect the performance of a Deep Neural Network. Let's see how we can set up a PyTorch pipeline for Image augmentation (with help of Albumentations Python library), and use visualization to find any potential issue before it costs you time and money. 
+
+
+ 
+![Photo by [Startup Stock
+Photos](https://www.pexels.com/photo/man-wearing-black-and-white-stripe-shirt-looking-at-white-printer-papers-on-the-wall-212286/)
+from Pexels](https://cdn-images-1.medium.com/max/1200/1*NdxIFtI2AeW3WkTaFePRjA.jpeg)
+
+
+ 
+In software development when something is wrong, usually we get an
+error, but with data science this is not the case. If the model is not
+performing well, then the general approach is to alter the model
+architecture or tune hyperparameters and train more. Yes, these are good
+options, but making sure that the data is correct should be the
+priority.
+
+From the television series [*The
+Newsroom*](https://www.imdb.com/title/tt1870479/)*¹*:
+
+> *The first step in solving a problem is to recognize that it
+> does exist.*
+
+Difference in train vs test data is the single biggest reason for low
+performing models. Image augmentations help to fight overfitting and
+improve the performance of deep neural networks for Computer Vision
+tasks by artificially adding more data. In this post, we will cover the
+following:
+
+1.  Overview of Computer Vision Tasks
+2.  Computer Vision Pipeline
+3.  Image Augmentation using Albumentations
+4.  Visualize DataLoaders
+
+If you are familiar with Computer Vision tasks and PyTorch, then feel
+free to skip the first two.
+
+## Overview of Computer Vision Tasks 
+
+Common types of Computer Vision (CV) tasks are:
+
+-   Image Classification
+-   Image Segmentation
+-   Object Detection
+
+If you are not familiar with these Computer Vision Tasks, then check out
+the post --- [Image Classification vs. Object Detection vs. Image
+Segmentation](https://medium.com/analytics-vidhya/image-classification-vs-object-detection-vs-image-segmentation-f36db85fe81). Image augmentations help to make the model
+generalize better for all 3 types of CV tasks.
+
+
+---
+ 
+ 
+## Computer Vision Pipeline 
+
+![PyTorch
+Data Pipeline](https://cdn-images-1.medium.com/max/800/1*hY7TSHLuP-fJBhdi29obVg.png)
+
+Both Input and Target data has to go through Dataset and DataLoader
+before being passed on to the model for training. It is better to
+visualize the output of the DataLoader. By this way, we can also
+identify when there is an issue with the Dataset definition. In relation
+to the above data pipeline diagram, only Target data and Transformations
+applied differs based on CV task type.
+
+## Image Augmentation using Albumentations 
+
+[Albumentations](https://albumentations.ai/docs/) is a fast and flexible image augmentation library. It
+supports both PyTorch and Keras.
+[Torchvision](https://pytorch.org/vision/stable/index.html) library is good but when it comes to Image
+Segmentation or Object Detection, it requires a lot of effort to get it
+right. The way of applying transformations to input data and target
+label differs based on augmentation type: Pixel-level or Spatial-level.
+
+## **Pixel-level augmentations:** 
+
+Changes the values of pixels of the original image, but they don't
+change the output mask. Image transformations such as changing
+brightness or contrast of adjusting values of the RGB-palette of the
+image are pixel-level augmentations. We modify the input image by
+adjusting its brightness, but we keep the output mask intact.
+
+![](https://cdn-images-1.medium.com/max/800/0*6VHqHzdQrt3qT5LY.jpg)
+
+## **Spatial-level augmentations:** 
+
+Changes both the image and the mask. When you apply image
+transformations such as mirroring or rotation or cropping a part of the
+input image, you also need to apply the same transformation to the
+output label to preserve its correctness.
+
+![](https://cdn-images-1.medium.com/max/800/0*NiWZ6s-G48p0pUqe.jpg)
+
+## **Brownie Points for Albumentations:** 
+
+-   Ability to add image augmentations to any computer vision pipeline
+    with minimal effort.
+-   Syntax for transforms declaration is very similar to
+    Torchvision.
+-   Lets you set the required probabilities and the magnitude of values
+    for each transformation.
+
+Example definition of an augmentation pipeline is as follows:
+
+Still not convinced? Then check out the article --- [Why you need a
+dedicated library for image
+augmentation](https://albumentations.ai/docs/introduction/why_you_need_a_dedicated_library_for_image_augmentation/).
+
+
+ 
+ 
+---
+
+
+ 
+ 
+## Visualize DataLoaders 
+
+### Why? 
+
+Right now, probably you would be wondering if Albumentations is so great
+then why do we need to visualize the DataLoaders. I'm glad you asked,
+Albumentation still requires user input², and we are not that great at
+providing correct values. Any rational person should think about the
+type of augmentation and whether it is applicable to a particular
+dataset or not, but often this is not the case.
+
+> *It is better to visualize just to avoid any surprises.*
+
+When rotational transformation is applied to the digit 9 from MNIST
+dataset, it can be transformed to 6, but the label would still say 9.
+See how easy it is to screw up data augmentation?
+
+![](https://cdn-images-1.medium.com/max/800/1*2zx0vNjpuSeyBxdZrokX9g.png)
+
+### How? 
+
+Torchvision functions like
+[*make\_grid*](https://pytorch.org/vision/stable/utils.html#torchvision.utils.make_grid) and
+[*draw\_bounding\_boxes*](https://pytorch.org/vision/stable/utils.html#torchvision.utils.draw_bounding_boxes) are quite handy, but they are not end to end. So we
+will write sort of wrappers which take in the `iter` object of the DataLoaders and plot the Input and Target
+data values.
+
+Notes about the below code:
+
+-   PyTorch Tensor expects image of shape (C x H x W) which is the
+    reverse when compared to NumPy array shape (H x W x C).
+-   Image data must be torch tensor of `float` data type to train the model, whereas for plotting
+    it should be of type `uint8`.
+-   It is best practice to avoid multiple initialization of the
+    `iter`object for DataLoaders when
+    possible as it is very time-consuming. This is the reason for taking
+    the `iter` object as function
+    parameter instead of DataLoader itself.
+
+Once again, The focus of this post is on the output of DataLoaders, if
+you are interested in the overall data pipeline then check out this
+[Colab
+Notebook](https://colab.research.google.com/drive/1xnYAmyWqMKMaYDY4J6yty_hQEIPrLMcK?usp=sharing)
+
+**Image Classification**
+
+Dataset 👉
+[CIFAR10](https://www.cs.toronto.edu/%7Ekriz/cifar.html)
+
+Transforms 👉 Resize ➡️ Rotate ➡️ Horizontal Flip
+
+![Visualization of Image Classification
+DataLoader](https://cdn-images-1.medium.com/max/800/1*73sPfLxYlYtBF5FQN6rYLg.png)
+
+**Image Segmentation**
+
+Dataset 👉
+[CAMVID](http://mi.eng.cam.ac.uk/research/projects/VideoRec/CamSeq01/)
+
+Transforms 👉 Resize ➡️ Rotate ➡️ Horizontal Flip
+
+
+ 
+![Visualization of Image Segmentation
+DataLoader](https://cdn-images-1.medium.com/max/1200/1*JBsOYAQdrT2TsYojdTHogw.png)
+
+
+ 
+**Object Detection**
+
+Dataset 👉 [Penn-Fudan Database for Pedestrian
+Detection](https://www.cis.upenn.edu/%7Ejshi/ped_html/)
+
+Transforms 👉 Resize ➡️ Horizontal Flip ➡️ Brightness & Contrast ➡️
+Shift, Scale & Rotate
+
+
+ 
+![Visualization of Object Detection
+DataLoader](https://cdn-images-1.medium.com/max/1200/1*GJSO4i3Gh9x-6qV6UV4Fdw.png)
+
+
+
+
+ 
+ ---
+
+
+ 
+ 
+### Conclusion 
+
+In Computer Vision, it is relatively easier to grasp what the model is
+doing. How it does something is a different story, but with enough
+experiments we can sort of guess what is working and what is not. The
+key is to figure this out with minimal number of experiments. The more
+confident we are in the data pipeline setup, more time to run various
+experiments to improve the model performance. If you have any questions or thoughts, feel free to reach out via
+[Contact](https://raravind.com/#contact)
+
+
+### Side Notes 
+
+\[1\] I believe that the quote from *The Newsroom* is adopted from the
+below quote by [Zig
+Ziglar](https://en.wikipedia.org/wiki/Zig_Ziglar), but I am not too sure.
+
+> *You cannot solve a problem until you acknowledge that you have one
+> and take responsibility for solving it.*
+
+\[2\] I have heard about AutoAlbument from albumentations, but yet to
+give it a go.

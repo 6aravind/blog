@@ -1,0 +1,166 @@
+---
+title: Stamp Detection using Computer Vision and Python
+
+description: We will use OpenCV to identify the number of stamps in a picture.
+
+image: https://cdn-images-1.medium.com/max/1200/1*LLr8vm1lJSaK5d9pWitkxQ.jpeg
+
+date: May 21, 2021
+
+category: data-science
+
+tags:
+- Computer Vision
+- OpenCV
+- Python
+- Image
+
+
+---
+
+ 
+ 
+# Stamp Detection using Computer Vision and Python 
+
+We will use OpenCV to identify the number of stamps in a picture. 
+
+
+ 
+![Photo by [Garvit
+Jagga](https://unsplash.com/@photophilic_spook?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
+on [Unsplash](https://unsplash.com/s/photos/computer-vision?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)](https://cdn-images-1.medium.com/max/1200/1*LLr8vm1lJSaK5d9pWitkxQ.jpeg)
+
+
+ 
+## Background 
+
+A friend of mine reach out and asked me whether I could write a program
+to detect the number of [Rubber
+stamp](https://en.wikipedia.org/wiki/Rubber_stamp)s in an image. Apparently, these invoice receipts will
+be categorized based on the number of stamps on them. Initially, I
+thought of building a Deep Learning Segmentation model, but soon I
+realized that it is not worth the effort.
+
+The images are generated in a controlled environment so few computer
+vision algorithms should do the trick. To illustrate the computer vision
+algorithms used in detecting the stamps, I will be using a sample image
+downloaded from Google as the original image is company property. The
+goal is to identify two stamps in the sample image.
+
+![Stamp
+Detection](https://cdn-images-1.medium.com/max/800/1*HP2U7mn-6rELAG5_TPBZbg.gif)
+
+## Solution 
+
+High level solution steps are:
+
+1. Read the image.
+2. Blur & detect the edges.
+3. Find all contours and remove the smaller contours.
+4. Fill the area inside contours & Close the blobs.
+5. Filter the stamps.
+
+Before we start let us import the necessary packages.
+
+### 1. Read the image 
+
+Read the color image using
+[*imread*](https://docs.opencv.org/master/d4/da8/group__imgcodecs.html#ga288b8b3da0892bd651fce07b3bbd3a56) function. To display the image we will use
+Matplotlib. Matplotlib expects the color image channels to be of the
+order RGB, but OpenCV reads the image as BGR, so we will write a helper
+function for the conversion.
+
+![Input
+Image](https://cdn-images-1.medium.com/max/800/1*xJyq_G_AkPoL8LrgfCqWLQ.png)
+
+### 2. Blur & detect the edges 
+
+First, we need to convert the image to grayscale using
+[cvtColor](https://docs.opencv.org/3.4/d8/d01/group__imgproc__color__conversions.html#ga397ae87e1288a81d2363b61574eb8cab) function. Then, we will use
+[bilateralFilter](https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga9d7064d478c95d60003cf839430737ed) to reduce noise in the image. Bilateral filter is
+preferred over Gaussian because it preserves the edges much better.
+Finally, we will use
+[canny](https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_canny/py_canny.html) edge detector to threshold the image and detect
+edges. The normal canny edge detector requires two threshold parameters
+which is hard to tune, so we will use the one from [Zero-parameter,
+automatic Canny edge detection with Python and
+OpenCV](https://www.pyimagesearch.com/2015/04/06/zero-parameter-automatic-canny-edge-detection-with-python-and-opencv)
+
+![Edged
+image](https://cdn-images-1.medium.com/max/800/1*-IxaLsf1EiF80TF-bcdBig.png)
+
+### 3. Find all contours and remove the smaller contours 
+
+[findContours](https://docs.opencv.org/3.4/d3/dc0/group__imgproc__shape.html#ga17ed9f5d79ae97bd4c7cf18403e1689a) function can find all contours in the image. The
+outermost contours are good enough for our use case, so we will use the
+retrieval mode **RETR\_EXTERNAL**. **CHAIN\_APPROX\_NONE** mode is
+preferred as we don't want to lose any point on the contour due to
+approximation. To remove the unwanted smaller contours, we can filter
+the contours by area.
+
+> Total nr of contours found: 408
+
+### 4. Fill the area inside contours & Close the blobs 
+
+Instead of working on the original binary image, we will draw the top
+contours on an image with black background and use this as base. Any
+disconnect in the contours are easier to identify when fill the area
+inside the contours using
+[drawContours](https://docs.opencv.org/3.4/d6/d6e/group__imgproc__draw.html#ga746c0625f1781f1ffc9056259103edbc) function.
+
+![Filled
+Contour](https://cdn-images-1.medium.com/max/800/1*cMg9dWFjtIzsVZKb0u6vUg.png)
+
+As suspected, the top stamp has a thin black line passing through it. We
+need to close this blob so that the top stamp is considered as one
+contour instead of two different ones. [Morphological
+closing](https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga67493776e3ad1a3df63883829375201f) operation is perfect for achieving this.
+
+![Closed
+Blob](https://cdn-images-1.medium.com/max/800/1*fTAn0USy7HFv7MguMhL9Yg.png)
+
+### 5. Filter the stamps 
+
+To isolate the stamp contours, we can identify all the contours from the
+latest binary image and filter for contours with more than 5 points
+(using
+[approxPolyDP](https://docs.opencv.org/3.4/d3/dc0/group__imgproc__shape.html#ga0012a5fdaea70b8a9970165d98722b4c)) as the stamp is an ellipse.
+
+![Stamp Identified
+Image](https://cdn-images-1.medium.com/max/800/1*IzRVjsq6sqC2XlEiM0QmpA.png)
+
+
+
+---
+
+
+ 
+ 
+## Bonus --- Highlight the identified stamps 
+
+For demo of this program, wouldn't it be cool if we can highlight only
+the stamped area of the image? Since we agree that it is indeed cool,
+let us see how we can achieve that.
+
+The steps involved are:
+
+  1. Duplicate the original image and blur the entire image.
+  2. Loop through all the points in the blurred image and for the points
+on or inside the stamp contour(using
+[pointPolygonTest](https://docs.opencv.org/3.4/d3/dc0/group__imgproc__shape.html#ga1a539e8db2135af2566103705d7a5722) to check), we replace it with pixel values from the
+output image. We are using pixel values from the output image because we
+need the blue lines drawn over the stamps.
+
+![](https://cdn-images-1.medium.com/max/800/1*l3aykODX7sR8RpvVRvQSgA.png)
+
+
+ 
+--- 
+ 
+ 
+## Conclusion 
+
+Yep, that's it for this post. You can access this code from
+[here](https://github.com/6aravind/tidbits/blob/main/cv/Stamp%20detection%20using%20computer%20vision%20and%20python.ipynb).If you have any questions or thoughts, feel free to reach out via
+[Contact](https://raravind.com/#contact)
+

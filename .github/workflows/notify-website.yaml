@@ -1,0 +1,16 @@
+name: notify-website
+
+on: 
+  push:
+
+jobs:
+  build:
+      runs-on: ubuntu-latest
+      steps:
+          - name: Notify
+            uses: convictional/trigger-workflow-and-wait@v1.3.0
+            with:
+              owner: 6aravind
+              repo: raravind-website
+              github_token: ${{ secrets.GITHUB_PERSONAL_ACCESS_TOKEN }}
+              workflow-file-name: get-latest-blogs.yml

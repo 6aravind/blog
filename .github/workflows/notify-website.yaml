@@ -12,5 +12,5 @@ jobs:
             with:
               owner: 6aravind
               repo: raravind-website
-              github_token: ${{ secrets.GITHUB_PERSONAL_ACCESS_TOKEN }}
+              github_token: ${{ secrets.PERSONAL_WEBSITE_ACCESS_TOKEN }}
               workflow-file-name: get-latest-blogs.yml

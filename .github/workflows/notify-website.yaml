@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-      runs-on: alpine:latest
+      runs-on: ubuntu:latest
       steps:
           - name: Notify
             uses: convictional/trigger-workflow-and-wait@v1.3.0

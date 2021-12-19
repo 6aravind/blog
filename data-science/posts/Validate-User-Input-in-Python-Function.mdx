@@ -46,6 +46,8 @@ logic for the function is:
     adding 1 or list of `string` with
     period appended to the argument `vals` based on the user input.
 
+<script src="https://gist.github.com/6aravind/9b4da3c1ebf0b6384700ecad5c30f238.js?file=Function_Add.py"></script>
+
 You can validate the user input with a simple `isinstance` function. The above code works, but it\'s not scalable
 for the below reasons:
 
@@ -60,7 +62,8 @@ for the below reasons:
 
 *Positive:*
 
-Positive Test Cases
+<script src="https://gist.github.com/6aravind/9b4da3c1ebf0b6384700ecad5c30f238.js?file=Test_Function_add_for_Positive_Flow.py"></script>
+
 
 *Negative:*
 
@@ -106,6 +109,9 @@ my recommendation is to use an external package like
 To replicate our example from above, we just have to add the
 `typechecked` decorator before the
 function definition and remove the validations for type checks.
+
+<script src="https://gist.github.com/6aravind/9b4da3c1ebf0b6384700ecad5c30f238.js?file=Function_Add_with_typeguard.py"></script>
+
 
 **Negative Tests:**
 

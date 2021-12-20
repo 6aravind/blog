@@ -62,6 +62,8 @@ High level solution steps are:
 
 Before we start let us import the necessary packages.
 
+<script src="https://gist.github.com/6aravind/c8c929aad312e697336cc13d14b20c0c.js?file=Libraries.py"></script>
+
 ### 1. Read the image 
 
 Read the color image using
@@ -72,6 +74,8 @@ function for the conversion.
 
 ![Input
 Image](https://cdn-images-1.medium.com/max/800/1*xJyq_G_AkPoL8LrgfCqWLQ.png)
+
+<script src="https://gist.github.com/6aravind/c8c929aad312e697336cc13d14b20c0c.js?file=Read_and_display_the_image.py"></script>
 
 ### 2. Blur & detect the edges 
 
@@ -89,6 +93,8 @@ OpenCV](https://www.pyimagesearch.com/2015/04/06/zero-parameter-automatic-canny-
 ![Edged
 image](https://cdn-images-1.medium.com/max/800/1*-IxaLsf1EiF80TF-bcdBig.png)
 
+<script src="https://gist.github.com/6aravind/c8c929aad312e697336cc13d14b20c0c.js?file=edge.py"></script>
+
 ### 3. Find all contours and remove the smaller contours 
 
 [findContours](https://docs.opencv.org/3.4/d3/dc0/group__imgproc__shape.html#ga17ed9f5d79ae97bd4c7cf18403e1689a) function can find all contours in the image. The
@@ -99,6 +105,10 @@ approximation. To remove the unwanted smaller contours, we can filter
 the contours by area.
 
 > Total nr of contours found: 408
+
+<script src="https://gist.github.com/6aravind/c8c929aad312e697336cc13d14b20c0c.js?file=Find_Contours.py"></script>
+
+
 
 ### 4. Fill the area inside contours & Close the blobs 
 
@@ -111,6 +121,8 @@ inside the contours using
 ![Filled
 Contour](https://cdn-images-1.medium.com/max/800/1*cMg9dWFjtIzsVZKb0u6vUg.png)
 
+<script src="https://gist.github.com/6aravind/c8c929aad312e697336cc13d14b20c0c.js?file=Fill_the_area_inside_contours.py></script>
+
 As suspected, the top stamp has a thin black line passing through it. We
 need to close this blob so that the top stamp is considered as one
 contour instead of two different ones. [Morphological
@@ -118,6 +130,8 @@ closing](https://docs.opencv.org/master/d4/d86/group__imgproc__filter.html#ga674
 
 ![Closed
 Blob](https://cdn-images-1.medium.com/max/800/1*fTAn0USy7HFv7MguMhL9Yg.png)
+
+<script src="https://gist.github.com/6aravind/c8c929aad312e697336cc13d14b20c0c.js?file=Close_Blobs.py"></script>
 
 ### 5. Filter the stamps 
 
@@ -128,6 +142,8 @@ latest binary image and filter for contours with more than 5 points
 
 ![Stamp Identified
 Image](https://cdn-images-1.medium.com/max/800/1*IzRVjsq6sqC2XlEiM0QmpA.png)
+
+<script src="https://gist.github.com/6aravind/c8c929aad312e697336cc13d14b20c0c.js?file=Filter_Stamps.py"></script>
 
 
 
@@ -153,7 +169,7 @@ need the blue lines drawn over the stamps.
 
 ![](https://cdn-images-1.medium.com/max/800/1*l3aykODX7sR8RpvVRvQSgA.png)
 
-
+<script src="https://gist.github.com/6aravind/c8c929aad312e697336cc13d14b20c0c.js?file=Highlight_the_stamped_region.py"></script>
  
 --- 
  

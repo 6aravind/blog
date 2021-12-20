@@ -81,30 +81,43 @@ snippet will be a separate file.
     post](https://www.liquidweb.com/kb/little-known-ways-to-utilize-github-gists/) and store it in a file
     named --- *create\_gist\_token.txt*
 
+<script src="https://gist.github.com/6aravind/e51d97ff0e99af896f5b0571c7952c7d.js?file=Read_Gist_Creation_Token.py"></script>
+
 2. We can read the markdown file using python and use regular
 expression to find all the code blocks. Code block for python is created
 by wrapping the code between \`\` in the markdown file. The flag
 [re.S](https://docs.python.org/3/library/re.html#re.S) makes sure that the matching includes newline as well
 
+<script src="https://gist.github.com/6aravind/e51d97ff0e99af896f5b0571c7952c7d.js?file=Read_Markdown_File_and_Get_Code_Snippets.py"></script>
+
 3. As mentioned earlier, each code snippet is going to be a separate
 file in a gist, so we need a name for each one. To keep it simple, we
 will take the first comment as the name of the file.
+
+<script src="https://gist.github.com/6aravind/e51d97ff0e99af896f5b0571c7952c7d.js?file=Get_the_first_comment_from_code_snippet.py"></script>
 
 4. The description of the gist will be the first header of the markdown
 file. Typically, this will be the name of the blog, so it should be
 sufficient. Now we can put all the data together and make the API call.
 
+<script src="https://gist.github.com/6aravind/e51d97ff0e99af896f5b0571c7952c7d.js?file=Setup_data_and_make_api_call.py"></script>
+
 5. As Devto supports liquid text we need special formatting for gist
 embedding when compared to Medium. In both the platforms, we need to
 specify the file so that the entire gist is not displayed.
+
+<script src="https://gist.github.com/6aravind/e51d97ff0e99af896f5b0571c7952c7d.js?file=Replace_the_code_blocks_with_corresponding_gist_in_the_Markdown_file.py"></script>
 
 6. Loop through all the uploaded files and replace them with
 corresponding gist embeddings in the markdown file. I have included the
 embeddings for both the platforms, feel free to modify it as per your
 needs.
 
+<script src="https://gist.github.com/6aravind/e51d97ff0e99af896f5b0571c7952c7d.js?file=Read_Gist_Creation_Token.py"></script>
+
 7. Rewiring the script to make it easier to run from command line.
 
+<script src="https://gist.github.com/6aravind/e51d97ff0e99af896f5b0571c7952c7d.js?file=Gist_Creation_From_Markdown_File.py"></script>
 
 ---
 

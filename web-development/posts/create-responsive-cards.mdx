@@ -1,0 +1,135 @@
+---
+
+title: Create Responsive Cards with ChakraUI
+
+description: Cards can be tricky to create especially when there are images within it. In this post, we will see how to create responsive cards with the help of ChakraUI.
+
+image: 
+
+date: 01 Jan, 2021
+
+category: web-development
+
+tags:
+  - Front-End
+  - cards
+  - ChakraUI
+
+---
+
+# Create Responsive Cards with ChakraUI
+
+Cards can be tricky to create especially when there are images within it. In this post, we will see how to create responsive cards with the help of ChakraUI.
+
+
+## Introduction 
+
+Cards are everywhere, from [personal website](www.raravind.com/blog/web-development) to E-commerce sites. Responsive cards can make or break your website.
+
+![Responsive Website](https://raw.githubusercontent.com/6aavind/blog/main/web-development/assets/Responsive%20Website.jpg)
+
+Okay, how? [Chakra UI](https://chakra-ui.com) makes it easy to get started especially for new developers as it provides most of the common components required for web development. Let's use cards to list down [blogs articles](www.raravind.com/blog/data-science). 
+
+
+## Create Card
+
+ChakraUI provides `Link Box` component which makes the entire Card act like link. The `as` property for the box will be *article* to play nice with the search engines.
+
+Set the image width to 100% so that it takes the entire width. For now, we can provide a fixed value for the height of the image.
+Styling the box is quite easy with the following properties 
+
+```jsx
+
+import { LinkBox, Image} from '@chakra-ui/react'
+
+const Card = ({ img }) => {
+
+  return (
+    <LinkBox  p={5} bg="cyan"  borderRadius={20} as="article">
+    <Image h="350px" objectFit='fill' w="100%" src={img} alt="stock image"/>
+   <h3> Title </h3> 
+   <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elementum urna quam. Aenean risus turpis, aliquet id diam et, lobortis pellentesque ex. Nulla facilisi. Maecenas. </p>
+    </LinkBox>
+  )
+}
+
+<Card img={}/>
+
+```
+
+## Stacked Cards
+
+`SimpleGrid` component is one of the many components provided by ChakraUI to stack items together. We can set the number of  cards per row using the property `columns`. 
+
+```jsx
+
+import { SimpleGrid} from '@chakra-ui/react'
+
+const imgs = ["https://cdn-images-1.medium.com/max/800/0*KVoWyha6VfWv8rPv.jpeg",                   "https://cdn-images-1.medium.com/max/800/1*lT0rghpDqMoLma42NGOChA.png",
+"https://cdn-images-1.medium.com/max/1200/1*1Nx6PRB34MtR7rzBNFROTA.png",
+"https://cdn-images-1.medium.com/max/1200/1*LLr8vm1lJSaK5d9pWitkxQ.jpeg",
+"https://cdn-images-1.medium.com/max/800/0*GGKO-0fJglMqrH_J",
+"https://cdn-images-1.medium.com/max/1200/1*NdxIFtI2AeW3WkTaFePRjA.jpeg",
+"https://cdn-images-1.medium.com/max/800/1*UvbqhJ61omj3NqgtvvjPUQ.jpeg",
+"https://cdn-images-1.medium.com/max/800/1*PhkVJnV3YUSNhSNSs-7PMg.png"];
+
+
+const CardLayout = ({ imgs}) => {
+  return (
+    <SimpleGrid columns={3} spacing={5}>
+      {imgs.map((img, index) => <Card key={index} img={img}/>)}
+    </SimpleGrid>
+  )
+}
+
+<CardLayout imgs={imgs} />
+
+
+```
+
+
+## Responsive Layout 
+
+**Image**
+
+This is nice but the layout does not work across the devices. By passing an array of values to the `columns` property we can make the layout responsive. How easy was that?
+
+```jsx 
+
+const CardResponsive = ({ imgs}) => {
+  return (
+    <SimpleGrid columns={[1,2,3]} spacing={5}>
+      {imgs.map((img, index) => <Card key={index} img={img}/>)}
+    </SimpleGrid>
+  )
+}
+
+<CardResponsive imgs={imgs} />
+
+
+```
+
+`useBreakpointValue` hook from ChakraUI is very powerful. This hook returns different value based on the device. 
+
+Fixed image height does not scale across devices so we will use 
+`useBreakpointValue` hook to fix it.
+
+```jsx 
+
+const h = useBreakpointValue({base: '350px', md: '350px', xl: '300px'})
+
+```
+
+```
+
+import { useBreakpointValue } from '@chakra-ui/react'
+
+
+```
+
+## Takeaway 
+
+ChakraUI provides many similar components, knowing when to use what will take some time but this makes it easier to get started. If you like this post then follow me on [Twitter](https://twitter.com/6aravind)
+
+## Resource 
+r

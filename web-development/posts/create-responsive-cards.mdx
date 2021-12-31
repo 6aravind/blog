@@ -4,7 +4,7 @@ title: Create Responsive Cards with ChakraUI
 
 description: Cards can be tricky to create especially when there are images within it. In this post, we will see how to create responsive cards with the help of ChakraUI.
 
-image: 
+image: https://raw.githubusercontent.com/6aavind/blog/main/web-development/assets/Responsive%20Website.jpg
 
 date: 01 Jan, 2021
 
@@ -33,29 +33,27 @@ Okay, how? [Chakra UI](https://chakra-ui.com) makes it easy to get started espec
 
 ## Create Card
 
-ChakraUI provides `Link Box` component which makes the entire Card act like link. The `as` property for the box will be *article* to play nice with the search engines.
+ChakraUI provides `Box` component which makes easier to create cards. The `as` property for the box will be *article* to play nice with the search engines.
 
 Set the image width to 100% so that it takes the entire width. For now, we can provide a fixed value for the height of the image.
 Styling the box is quite easy with the following properties 
 
 ```jsx
-
-import { LinkBox, Image} from '@chakra-ui/react'
+import { Box, Image, Text} from '@chakra-ui/react'
 
 const Card = ({ img }) => {
 
   return (
-    <LinkBox  p={5} bg="cyan"  borderRadius={20} as="article">
+    <Box  p={5} bg="cyan"  borderRadius={20} as="article">
     <Image h="350px" objectFit='fill' w="100%" src={img} alt="stock image"/>
    <h3> Title </h3> 
-   <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elementum urna quam. Aenean risus turpis, aliquet id diam et, lobortis pellentesque ex. Nulla facilisi. Maecenas. </p>
-    </LinkBox>
+   <Text noOfLines={2}> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elementum urna quam. Aenean risus turpis, aliquet id diam et, lobortis pellentesque ex. Nulla facilisi. Maecenas. </p>
+    </Text>
   )
 }
-
-<Card img={}/>
-
 ```
+
+**Image**
 
 ## Stacked Cards
 
@@ -65,7 +63,8 @@ const Card = ({ img }) => {
 
 import { SimpleGrid} from '@chakra-ui/react'
 
-const imgs = ["https://cdn-images-1.medium.com/max/800/0*KVoWyha6VfWv8rPv.jpeg",                   "https://cdn-images-1.medium.com/max/800/1*lT0rghpDqMoLma42NGOChA.png",
+const imgs = ["https://cdn-images-1.medium.com/max/800/0*KVoWyha6VfWv8rPv.jpeg",                
+"https://cdn-images-1.medium.com/max/800/1*lT0rghpDqMoLma42NGOChA.png",
 "https://cdn-images-1.medium.com/max/1200/1*1Nx6PRB34MtR7rzBNFROTA.png",
 "https://cdn-images-1.medium.com/max/1200/1*LLr8vm1lJSaK5d9pWitkxQ.jpeg",
 "https://cdn-images-1.medium.com/max/800/0*GGKO-0fJglMqrH_J",
@@ -84,9 +83,8 @@ const CardLayout = ({ imgs}) => {
 
 <CardLayout imgs={imgs} />
 
-
 ```
-
+**Image**
 
 ## Responsive Layout 
 
@@ -103,33 +101,20 @@ const CardResponsive = ({ imgs}) => {
     </SimpleGrid>
   )
 }
-
-<CardResponsive imgs={imgs} />
-
-
 ```
+
+**Image**
 
 `useBreakpointValue` hook from ChakraUI is very powerful. This hook returns different value based on the device. 
 
-Fixed image height does not scale across devices so we will use 
-`useBreakpointValue` hook to fix it.
+Fixed image height does not scale across devices so we will use `useBreakpointValue` hook to fix it.
 
-```jsx 
-
+```js
 const h = useBreakpointValue({base: '350px', md: '350px', xl: '300px'})
-
 ```
-
-```
-
-import { useBreakpointValue } from '@chakra-ui/react'
-
-
-```
+**Image**
 
 ## Takeaway 
 
 ChakraUI provides many similar components, knowing when to use what will take some time but this makes it easier to get started. If you like this post then follow me on [Twitter](https://twitter.com/6aravind)
 
-## Resource 
-r

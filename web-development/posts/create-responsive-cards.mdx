@@ -39,40 +39,24 @@ Set the image width to 100% so that it takes the entire width. For now, we can p
 Styling the box is quite easy with the following properties 
 
 ```jsx
-import { Box, Image, Text} from '@chakra-ui/react'
-
 const Card = ({ img }) => {
 
   return (
-    <Box  p={5} bg="cyan"  borderRadius={20} as="article">
+    <Box  p={5} bg="cyan.400"  borderRadius={20} as="article">
     <Image h="350px" objectFit='fill' w="100%" src={img} alt="stock image"/>
-   <h3> Title </h3> 
-   <Text noOfLines={2}> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elementum urna quam. Aenean risus turpis, aliquet id diam et, lobortis pellentesque ex. Nulla facilisi. Maecenas. </p>
-    </Text>
-  )
-}
+   <Heading size="xl" fontWeight="bold"> Blog Title </Heading> 
+   <Text noOfLines={2}> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elementum urna quam. Aenean risus turpis, aliquet id diam et, lobortis pellentesque ex. Nulla facilisi. Maecenas. </Text>
+    </Box>  
+)
 ```
 
 **Image**
 
 ## Stacked Cards
 
-`SimpleGrid` component is one of the many components provided by ChakraUI to stack items together. We can set the number of  cards per row using the property `columns`. 
+`SimpleGrid` component is one of the many components provided by ChakraUI to stack items together. We can set the number of  cards per row using the property `columns`. We will go with 3 cards per row.
 
 ```jsx
-
-import { SimpleGrid} from '@chakra-ui/react'
-
-const imgs = ["https://cdn-images-1.medium.com/max/800/0*KVoWyha6VfWv8rPv.jpeg",                
-"https://cdn-images-1.medium.com/max/800/1*lT0rghpDqMoLma42NGOChA.png",
-"https://cdn-images-1.medium.com/max/1200/1*1Nx6PRB34MtR7rzBNFROTA.png",
-"https://cdn-images-1.medium.com/max/1200/1*LLr8vm1lJSaK5d9pWitkxQ.jpeg",
-"https://cdn-images-1.medium.com/max/800/0*GGKO-0fJglMqrH_J",
-"https://cdn-images-1.medium.com/max/1200/1*NdxIFtI2AeW3WkTaFePRjA.jpeg",
-"https://cdn-images-1.medium.com/max/800/1*UvbqhJ61omj3NqgtvvjPUQ.jpeg",
-"https://cdn-images-1.medium.com/max/800/1*PhkVJnV3YUSNhSNSs-7PMg.png"];
-
-
 const CardLayout = ({ imgs}) => {
   return (
     <SimpleGrid columns={3} spacing={5}>
@@ -81,8 +65,6 @@ const CardLayout = ({ imgs}) => {
   )
 }
 
-<CardLayout imgs={imgs} />
-
 ```
 **Image**
 
@@ -90,7 +72,7 @@ const CardLayout = ({ imgs}) => {
 
 **Image**
 
-This is nice but the layout does not work across the devices. By passing an array of values to the `columns` property we can make the layout responsive. How easy was that?
+The 3 column layout does not scale well across the devices. By passing an array of values to the `columns` property we can make the layout responsive for all the devices. How easy was that?
 
 ```jsx 
 
@@ -103,11 +85,7 @@ const CardResponsive = ({ imgs}) => {
 }
 ```
 
-**Image**
-
-`useBreakpointValue` hook from ChakraUI is very powerful. This hook returns different value based on the device. 
-
-Fixed image height does not scale across devices so we will use `useBreakpointValue` hook to fix it.
+Fixed image height does seem to work across devices so we will use `useBreakpointValue` hook to fix it inside the `Card` component. `useBreakpointValue` hook from ChakraUI is very powerful, it returns different value based on the device. 
 
 ```js
 const h = useBreakpointValue({base: '350px', md: '350px', xl: '300px'})

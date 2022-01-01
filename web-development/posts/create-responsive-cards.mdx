@@ -6,7 +6,7 @@ description: Cards can be tricky to create especially when there are images with
 
 image: https://raw.githubusercontent.com/6aravind/blog/draft/web-development/assets/Responsive%20Website.jpg
 
-date: January 01, 2021
+date: January 01, 2022
 
 category: web-development
 
@@ -40,7 +40,6 @@ Styling the box is quite easy with the following properties
 
 ```jsx
 const Card = ({ img }) => {
-
   return (
     <Box  p={5} bg="cyan.400"  borderRadius={20} as="article">
     <Image h="350px" objectFit='fill' w="100%" src={img} alt="stock image"/>
@@ -85,7 +84,7 @@ const CardResponsive = ({ imgs}) => {
 }
 ```
 
-Fixed image height does seem to work across devices so we will use `useBreakpointValue` hook to fix it inside the `Card` component. `useBreakpointValue` hook from ChakraUI is very powerful, it returns different value based on the device. 
+Fixed image height does seem to work across devices, so we will use `useBreakpointValue` hook to fix it inside the `Card` component. `useBreakpointValue` hook from ChakraUI is very powerful, it returns different value based on the device. 
 
 ```js
 const h = useBreakpointValue({base: '350px', md: '350px', xl: '300px'})
@@ -95,5 +94,5 @@ const h = useBreakpointValue({base: '350px', md: '350px', xl: '300px'})
 
 ## Takeaway 
 
-ChakraUI provides many similar components, knowing when to use what will take some time but this makes it easier to get started. If you like this post then follow me on [Twitter](https://twitter.com/6aravind)
+ChakraUI provides many similar components, knowing when to use what will take some time, but this makes it easier to get started. If you like this post then follow me on [Twitter](https://twitter.com/6aravind)
 

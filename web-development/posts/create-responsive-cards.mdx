@@ -33,10 +33,9 @@ Okay, how? [Chakra UI](https://chakra-ui.com) makes it easy to get started espec
 
 ## Create Card
 
-ChakraUI provides `Box` component which makes easier to create cards. The `as` property for the box will be *article* to play nice with the search engines.
+ChakraUI provides `Box` component which makes easier to create cards. The `as` property for the box is set as *article* to play nice with the search engines.
 
-Set the image width to 100% so that it takes the entire width. For now, we can provide a fixed value for the height of the image.
-Styling the box is quite easy with the following properties 
+Set the image width to 100% so that it takes the entire width of the `Box`. For now, we can provide a fixed value for the height of the image, this determines the height of the box. Modify the box with properties such as `borderWidth` & `borderRadius`.
 
 ```jsx
 const Card = ({ img }) => {
@@ -53,7 +52,7 @@ const Card = ({ img }) => {
 
 ## Stacked Cards
 
-`SimpleGrid` component is one of the many components provided by ChakraUI to stack items together. We can set the number of  cards per row using the property `columns`. We will go with 3 cards per row.
+`SimpleGrid` component is one of the many components provided by ChakraUI to stack items together. We can set the number of cards per row using the property `columns`. We will go with 3 cards per row.
 
 ```jsx
 const CardLayout = ({ imgs}) => {
@@ -84,15 +83,15 @@ const CardResponsive = ({ imgs}) => {
 }
 ```
 
+![Responsive Stacked Cards - Blog Post](https://raw.githubusercontent.com/6aravind/blog/draft/web-development/assets/card-04.png)
+
 Fixed image height does seem to work across devices, so we will use `useBreakpointValue` hook to fix it inside the `Card` component. `useBreakpointValue` hook from ChakraUI is very powerful, it returns different value based on the device. 
 
 ```js
 const h = useBreakpointValue({base: '350px', md: '350px', xl: '300px'})
 ```
 
-![Responsive Stacked Cards - Blog Post](https://raw.githubusercontent.com/6aravind/blog/draft/web-development/assets/card-04.png)
 
 ## Takeaway 
 
-ChakraUI provides many similar components, knowing when to use what will take some time, but this makes it easier to get started. If you like this post then follow me on [Twitter](https://twitter.com/6aravind)
-
+ChakraUI provides many similar components, knowing when to use what will take some time, but getting started for new developers is easier now. If you like this post then follow me on [Twitter](https://twitter.com/6aravind) for similar ones. Happy New Year!

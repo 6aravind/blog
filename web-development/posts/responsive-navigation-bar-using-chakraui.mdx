@@ -1,0 +1,241 @@
+---
+
+title: Create a Responsive Navigation Bar using ChakraUI
+
+description: We all know how crucial the navigation bar is for websites. But most websites don't have a good one. Why? Because responsive design for navigation bar is not easy.
+
+image: https://raw.githubusercontent.com/6aravind/blog/main/web-development/assets/Responsive%20Navigation%20Bar%20Cover%20Image.JPG
+
+date: January 09, 2022
+
+category: web-development
+
+tags:
+  - Front-End
+  - ChakraUI
+  - Navigation Bar
+  - Responsive
+
+---
+
+# Create a Responsive Navigation Bar using ChakraUI
+
+![Responsive Navigation Bar Cover Image](https://raw.githubusercontent.com/6aravind/blog/main/web-development/assets/Responsive%20Navigation%20Bar%20Cover%20Image.JPG)
+
+## Introduction
+
+We all know how crucial the navigation bar is for websites. But most websites don't have a good one. Why? Because responsive design for navigation bar is not easy. 
+
+## How is the navigation bar different?
+
+
+Usually when we build a [responsive layout](https://chakra-ui.com/docs/layout/stack#responsive-direction) using ChakraUI, the common approach is to stack the components horizontally for larger devices & vertically for smaller ones. This approach does not work for navigation bar. Typical navigation bar has the following components:
+*  Logo 
+*  Navigation menu  
+*  Call to action buttons
+
+
+| Desktop | Mobile |
+|:-:|:-:|
+|![Mobile Navigation Bar](https://raw.githubusercontent.com/6aravind/blog/main/web-development/assets/navbar_01.png)|![Mobile Navigation Bar Expanded](https://raw.githubusercontent.com/6aravind/blog/main/web-development/assets/navbar_02.png)|
+
+
+
+Based on the device type, we need to rearrange the items. We will see how to build the above navigation bar in 3 steps:
+
+1. Build desktop version
+2. Build mobile version 
+3. Make it responsive
+
+
+## Build desktop version
+
+The desktop version is easy to follow. Wrap all the elements inside a `Flex` with `justify` property value as "space-between". To get even spacing between navigation bar items, we will list them inside a `HStack` component.
+
+```js
+// file: header.js
+import {  Image, Flex, Button,  HStack , chakra } from '@chakra-ui/react';
+import Logo from '../public/logo.svg';
+import {Link} from 'react-scroll'
+import data from './header.data';
+import React from "react";
+
+const CTA = "Get Started"
+
+
+export default function Header() {
+  return (
+    <chakra.header id="header">
+      <Flex
+        w="100%"
+        px="6"
+        py="5"
+        align="center"
+        justify="space-between"
+      >
+       // Logo
+        <Image src={Logo.src} h="50px" />
+        
+		// Nav Items
+        <HStack as="nav" spacing="5">
+          {data.map((item, i) => (
+            <Link key={i}>
+              <Button variant="nav"> {item.label} </Button>
+            </Link>
+          ))}
+        </HStack>
+
+		// Call to action items
+        <HStack>
+          <Button>
+            {CTA}
+          </Button>
+        </HStack>
+        
+      </Flex>
+    </chakra.header>
+  );
+}
+```
+
+## Build mobile version
+ 
+
+1. ChakraUI provides the [Drawer component](https://chakra-ui.com/docs/overlay/drawer), which is a panel that slides out from the edge of the screen. We can place all the navigation items inside the body of the drawer for the mobile version.
+
+```js
+// file: drawer.js
+
+import React from 'react';
+import { Drawer, DrawerBody, DrawerFooter, DrawerHeader, DrawerOverlay, DrawerContent,
+  DrawerCloseButton, Flex, Text
+} from "@chakra-ui/react";
+
+
+export default function DrawerExample({
+const p = 15;
+  placement = "right",
+  width,
+  isOpen,
+  children,
+  onClose,
+  btnRef,
+  title = "Menu",
+  footer,
+}) {
+  return (
+    <Flex w={width}>
+      <Drawer
+        isOpen={isOpen}
+        placement={placement}
+        onClose={onClose}
+        finalFocusRef={btnRef}
+      >
+        <DrawerOverlay />
+        <DrawerContent alignItems="center">
+          <DrawerCloseButton alignSelf="end" mx={p} my={p} />
+          <DrawerHeader my={p}>
+            <Text as="p"> {title} </Text>
+          </DrawerHeader>
+          <DrawerBody>{children}</DrawerBody>
+          <DrawerFooter>{footer}</DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+    </Flex>
+  );
+}
+
+```
+
+2. We will use the useRef react hook to communicate between the menu icon and drawer. If you don't about this hook or need to refresh your memory then checkout the post [React useRef Guide by Dmitri Pavlutin](https://dmitripavlutin.com/react-useref-guide/). 
+
+
+```js
+// file: mobile-drawer.js
+
+import { useDisclosure, Flex, Box, Button,  VStack, Icon, HStack, Link as ChakraLink } from "@chakra-ui/react";
+import Drawer from './drawer';
+import {  IoMdMenu } from 'react-icons/io';
+import { Link } from 'react-scroll';
+import data from './header.data';
+import React from "react";
+
+
+export default function MobileDrawer() {
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const btnRef = React.useRef();
+
+  return (
+    <Flex >
+		// Menu Button
+      <Button ref={btnRef} onClick={onOpen}>
+        <IoMdMenu size="26px" />
+      </Button>
+      
+      // Drawer Component
+      <Drawer
+        isOpen={isOpen}
+        onClose={onClose}
+        finalFocusRef={btnRef}
+      >
+        <VStack alignItems="left">
+          {data.map((item, i) => (
+            <Link key={i}>
+              <Button variant='text' > {item.label} </Button>
+            </Link>
+          ))}
+        </VStack>
+      </Drawer>
+    </Flex>
+  );
+};
+```
+
+3. Finally, we can add the `MobileDrawer` component next to the CTA button inside the `header.js` file.
+
+```js
+// file: header.js
+
+		// Call to action items
+        <HStack>
+          <Button aria-label={CTA} variant="outline">
+            {CTA}
+          </Button>
+          <MobileDrawer />
+        </HStack>
+```
+
+
+| Navigation Menu | Navigation Menu - Expanded|
+|:-:|:-:|
+|![Mobile Navigation Bar](https://raw.githubusercontent.com/6aravind/blog/main/web-development/assets/navbar_04.png)|![Mobile Navigation Bar Expanded](https://raw.githubusercontent.com/6aravind/blog/main/web-development/assets/navbar_03.png)|
+
+
+## Make it responsive 
+
+| Desktop |Mobile|
+|:-:|:-:|
+|![Desktop Navigation Bar](https://raw.githubusercontent.com/6aravind/blog/main/web-development/assets/navbar_04.png)|![Mobile Navigation Bar Expanded](https://raw.githubusercontent.com/6aravind/blog/main/web-development/assets/navbar_05.png)|
+
+All the hard parts are over. Now we just have to hide certain components based on the screen size. Thanks to ChakraUI it's easier than ever by using the `display` property.
+
+1. Hide the `MobileDrawer` component in the Desktop version by adding `display={{ base: "flex", md: "none" }}` to the `Flex` component inside it.
+2. Hide the Navigation Items listed inside `HStack` component in the mobile version by adding `display={{ base: "none", md: "flex" }}`.
+
+
+### Final Desktop Version:
+![Desktop Navigation Bar](https://raw.githubusercontent.com/6aravind/blog/main/web-development/assets/navbar_01.png)
+
+
+### Final Mobile Version:
+| Navigation Menu | Navigation Menu - Expanded|
+|:-:|:-:|
+|![Mobile Navigation Bar](https://raw.githubusercontent.com/6aravind/blog/main/web-development/assets/navbar_02.png)|![Mobile Navigation Bar Expanded](https://raw.githubusercontent.com/6aravind/blog/main/web-development/assets/navbar_03.png)|
+
+
+## Conclusion 
+
+Navigation bar is one of those things which look scary to get started but once you find a good example, it's not that hard to build. Hope you found this post to be useful. For more such posts follow/DM me via [Twitter](https://twitter.com/6aravind)
+
+## Similar article
+[Create Responsive Cards using ChakraUI](https://www.raravind.com/blog/web-development/create-responsive-cards)
